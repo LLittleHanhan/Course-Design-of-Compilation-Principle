@@ -1,5 +1,6 @@
 import ffp
 import ll1
+import recursive_descent
 
 formula_path = './formula.txt'
 vt_path = './vt.txt'
@@ -22,6 +23,7 @@ ffp.generateFFTSet(vt_path, formula_path)
 data = ll1.ll1(token_path)
 
 # 递归下降
+#recursive_descent.Start(ffp.S)
 
 # 可视化
 from pyecharts import options as opts
