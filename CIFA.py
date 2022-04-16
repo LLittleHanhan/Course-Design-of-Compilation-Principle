@@ -1,6 +1,5 @@
 #张小北
 import re
-import pyqt5_tools
 class lex:
     #保留字
     reserved_words={"program": 'PROGRAM',"type": 'TYPE',
@@ -168,9 +167,14 @@ class lex:
             val=re.sub(r"{.*}",'',val)
             token.append(self.scan(val,i))
         return token
-
+'''
 l=lex()
 a=l.run('example/c1.txt')
-for k in a:
-    print(k)
+for i,val in enumerate(a):
+    print(val)
+'''
+
+
+
+
 

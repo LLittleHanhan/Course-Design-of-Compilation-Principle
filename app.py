@@ -9,13 +9,14 @@ Created on 2018年5月29日
 @file: LeftTabWidget
 @description:
 """
+from CIFA import lex
 
 from random import randint
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QListWidget, QStackedWidget, QHBoxLayout, \
-        QListWidgetItem, QLabel
+    QListWidgetItem, QLabel, QTableWidget, QTableWidgetItem, QAbstractItemView, QHeaderView
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QUrl
 
@@ -43,6 +44,36 @@ class LeftTabWidget(QWidget):
         # 文字居中
         item.setTextAlignment(Qt.AlignCenter)
 
+    def set_lex(self,res):
+        LEX = QTableWidget()
+        LEX.setColumnCount(3)
+        LEX.setHorizontalHeaderLabels(['line', 'LEX', 'SEM'])
+        # 匹配页面大小
+        LEX.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        # 不可更改
+        LEX.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # 整行选中
+        LEX.setSelectionBehavior(QAbstractItemView.SelectRows)
+        i = 0
+        count = 0
+        for v in res:
+            count = count + len(v)
+        LEX.setRowCount(count)
+        for v in res:
+            for val in v:
+                newItem = QTableWidgetItem(str(val['LINE']))
+                newItem.setTextAlignment(Qt.AlignCenter)
+                LEX.setItem(i, 0, newItem)
+                newItem = QTableWidgetItem(val['LEX'])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                LEX.setItem(i, 1, newItem)
+                newItem = QTableWidgetItem(val['SEM'])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                LEX.setItem(i, 2, newItem)
+                i = i + 1
+
+        self.stackedWidget.addWidget(LEX)
+
     def initUi(self):
         # 初始化界面
         # 通过QListWidget的当前item变化来切换QStackedWidget中的序号
@@ -68,10 +99,15 @@ class LeftTabWidget(QWidget):
             # 文字居中
             item.setTextAlignment(Qt.AlignCenter)      
         '''
+        l = lex()
+        a = l.run('example/c1.txt')
+        res = list(filter(None, a))
 
-        view = QWebEngineView()
-        view.load(QUrl(QFileInfo("2.YUFA/GrammarTree.html").absoluteFilePath()))
-        self.stackedWidget.addWidget(view)
+        self.set_lex(res)
+
+        parse = QWebEngineView()
+        parse.load(QUrl(QFileInfo("2.YUFA/GrammarTree.html").absoluteFilePath()))
+        self.stackedWidget.addWidget(parse)
 
         # 再模拟20个右侧的页面(就不和上面一起循环放了)
         #for i in range(4):
@@ -119,6 +155,13 @@ QLabel {
 
 if __name__ == '__main__':
     import sys
+    '''
+        l = lex()
+        a = l.run('example/c1.txt')
+        for k in a:
+            print(k)
+    '''
+
 
     app = QApplication(sys.argv)
     app.setStyleSheet(Stylesheet)
