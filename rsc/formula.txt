@@ -41,7 +41,7 @@ StmList ::= Stm StmMore
 StmMore ::= $ | ; StmList
 Stm ::= ConditionalStm | LoopStm | InputStm | OutputStm | ReturnStm | ID AssCall
 AssCall ::= AssignmentRest | CallStmRest
-AssignmentRest ::= VariMore = Exp
+AssignmentRest ::= VariMore := Exp
 ConditionalStm ::= IF RelExp THEN StmList ELSE StmList FI
 LoopStm ::= WHILE RelExp DO StmList ENDWH
 InputStm ::= READ ( Invar )

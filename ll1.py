@@ -5,6 +5,7 @@ class infoNode:
     def __init__(self, nextBrotherId=-1):
         self.nextBrotherId = nextBrotherId
 
+
 def ll1(token_path):
     # 读取token序列
     ft = open(token_path, 'r')
@@ -45,6 +46,7 @@ def ll1(token_path):
             cur_node = gramTree.parent(cur_node.identifier)
         cur_node = gramTree.get_node(cur_node.data.nextBrotherId)
     gramTree.show()
+    print(gramTree.to_dict(sort=False))
     return
 
 
