@@ -1,4 +1,5 @@
 # some global variable
+from treelib import Tree
 
 formula_path = 'rsc/formula.txt'
 vt_path = 'rsc/vt.txt'
@@ -16,3 +17,4 @@ cfirstSet = {}  # 产生式左端vt的first集
 followSet = {}  # follow集
 predictSet = {}  # predict集
 
+gramTree = Tree()
