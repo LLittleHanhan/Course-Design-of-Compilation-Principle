@@ -5,6 +5,7 @@ vt_path = 'rsc/vt.txt'
 predict_path = 'rsc/predict.txt'
 token_path = 'rsc/token.txt'
 
+
 dic = {}  # 产生式
 tokens = []  # token序列
 vt = set()  # 非终极符
