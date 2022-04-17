@@ -2,7 +2,7 @@
 import ffp
 
 tokens = []
-token_path = './token.txt'
+token_path = 'rsc/token.txt'
 
 # 读取token序列
 ft = open(token_path, 'r')

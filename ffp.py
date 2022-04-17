@@ -1,15 +1,7 @@
-dic = {}  # 产生式
-tokens = []  # token序列
-vt = set()  # 非终极符
-S = 'Program'  # 起始符
-
-ffirstSet = {}  # 产生式右端的first集
-cfirstSet = {}  # 产生式左端vt的first集
-followSet = {}  # follow集
-predictSet = {}  # predict集
+from var import dic, S, vt, cfirstSet, ffirstSet, followSet, predictSet
 
 
-def generateFFTSet(vt_path, formula_path):
+def generateFFTSet(vt_path, formula_path, predict_path):
     fv = open(vt_path, 'r')
     ff = open(formula_path, 'r')
     # 读VT
@@ -23,6 +15,8 @@ def generateFFTSet(vt_path, formula_path):
         cfirstSet[temp[0]] = set()
         # follow集初始化
         followSet[temp[0]] = set()
+    fv.close()
+    ff.close()
 
     # first集
     for key in dic.keys():
@@ -32,8 +26,14 @@ def generateFFTSet(vt_path, formula_path):
     # predict集
     genPredictSet()
 
-    fv.close()
-    ff.close()
+    # 写predict集
+    fp = open(predict_path, 'w')
+    for key in dic.keys():
+        for formula in dic[key].split(' | '):
+            for item in predictSet[key + ' = ' + formula]:
+                fp.write(item + ' ')
+            fp.write('\n')
+    fp.close()
 
     return
 

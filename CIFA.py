@@ -1,5 +1,5 @@
 #张小北
-
+import re
 class lex:
     #保留字
     reserved_words={"program": 'PROGRAM',"type": 'TYPE',
@@ -12,7 +12,7 @@ class lex:
                     "while": 'WHILE',"do": 'DO',
                     "endwh": 'ENDWH',"read": 'READ',
                     "write": 'WRITE', "return": 'RETURN',
-                    "integer": 'INTEGER_T'}
+                    "integer": 'INTEGER'}
     lex_tag={'PROGRAM': "PROGRAM",'TYPE': "TYPE",
              'VAR': "VAR",'PROCEDURE': "PROCEDURE",
              'BEGIN': "BEGIN",'END': "END",
@@ -55,6 +55,8 @@ class lex:
     def scan(self,ch,line):
         result = []
         Len = len(ch)
+        if Len==0:
+            return
         i = 0
         while i<Len :
             if ch[i].isalpha():                                    #如果字符是字母
@@ -159,16 +161,28 @@ class lex:
         with open(path, "r") as f:
             data = f.readlines()
         #print(data)
-        data=data[2:]
         token=[]
         for i,val in enumerate(data):
             val=val[0:-1]
+            val=re.sub(r"{.*}",'',val)
             token.append(self.scan(val,i))
+        token = list(filter(None, token))
+        with open("rsc/token.txt", "w") as f:
+            with open("rsc/vt.txt", "w") as t:
+                for v in token:
+                    for res in v:
+                        c=str(res['LINE'])+' '+res['LEX']+' '+res['SEM']+'\n'
+                        t.write(res['LEX']+' ')
+                        f.writelines(c)
         return token
+'''
 
-
-
+'''
 l=lex()
-a=l.run("c1.txt")
-for aa in a:
-    print(aa)
+a=l.run('example/c1.txt')
+for i,val in enumerate(a):
+    print(val)
+
+
+
+

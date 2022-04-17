@@ -1,6 +1,3 @@
-#朱志宇
+import var
 
-print("test1")
-print("test22")
-print("憨憨")
-print("废物")
+print(var.gramTree)

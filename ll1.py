@@ -1,26 +1,4 @@
-from treelib import Tree
-'''
-# 需要在tree.py添加此函数！！！！！！！！！！！
-def my_to_dict(self, nid=None):
-    """Transform the whole tree into a dict."""
-    nid = self.root if (nid is None) else nid
-    ntag = self[nid].tag
-    tree_dict = {"name": ntag, "children": []}
-    if self[nid].expanded:
-        queue = [self[i] for i in self[nid].successors(self._identifier)]
-
-        for elem in queue:
-            tree_dict["children"].append(
-                self.my_to_dict(elem.identifier))
-        if len(tree_dict["children"]) == 0:
-            tree_dict = {"name": ntag}
-        return tree_dict
-'''
-
-import ffp
-
-tokens = []
-
+from var import tokens, S, dic, predictSet,gramTree
 
 # 记录token信息
 class infoNode:
@@ -36,16 +14,15 @@ def ll1(token_path):
             tokens.append(token)
 
     id = 0  # 用于标志每一个树节点
-    gramTree = Tree()
     info = infoNode()
-    gramTree.create_node(tag=ffp.S, identifier=id, data=info)
+    gramTree.create_node(tag=S, identifier=id, data=info)
     cur_node = gramTree.get_node(id)
     id += 1
     for token in tokens:
         while cur_node.tag != token:
             match_tag = False
-            for formula in ffp.dic[cur_node.tag].split(' | '):
-                if token in ffp.predictSet[cur_node.tag + ' = ' + formula]:
+            for formula in dic[cur_node.tag].split(' | '):
+                if token in predictSet[cur_node.tag + ' = ' + formula]:
                     match_tag = True
                     # 创建结点
                     vl = formula.split(' ')
@@ -69,7 +46,8 @@ def ll1(token_path):
             cur_node = gramTree.parent(cur_node.identifier)
         cur_node = gramTree.get_node(cur_node.data.nextBrotherId)
     gramTree.show()
-    return gramTree.my_to_dict()
+    print(gramTree.to_dict(sort=False))
+    return
 
 
 '''
