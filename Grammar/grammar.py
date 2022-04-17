@@ -1,29 +1,16 @@
+from var import vt_path, formula_path, predict_path, token_path
 import ffp
 import ll1
 import recursive_descent
 
-formula_path = './formula.txt'
-vt_path = './vt.txt'
-predict_path = './predict.txt'
-token_path = './token.txt'
-
 # 生成ffp集
-ffp.generateFFTSet(vt_path, formula_path)
-
-# # 写predict集
-# fp = open(predict_path,'w')
-# for key in ffp.dic.keys():
-#     for formula in ffp.dic[key].split(' | '):
-#         for item in ffp.predictSet[key + ' = ' + formula]:
-#             fp.write(item + ' ')
-#         fp.write('\n')
-# fp.close()
+ffp.generateFFTSet(vt_path, formula_path, predict_path)
 
 # ll1
 data = ll1.ll1(token_path)
 
 # 递归下降
-#recursive_descent.Start(ffp.S)
+# recursive_descent.Start(ffp.S)
 
 # 可视化
 from pyecharts import options as opts

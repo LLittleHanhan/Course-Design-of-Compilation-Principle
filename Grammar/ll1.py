@@ -17,10 +17,10 @@ def my_to_dict(self, nid=None):
         return tree_dict
 '''
 
-import ffp
 
-tokens = []
 
+from var import tokens
+from var import S,dic,predictSet
 
 # 记录token信息
 class infoNode:
@@ -38,14 +38,14 @@ def ll1(token_path):
     id = 0  # 用于标志每一个树节点
     gramTree = Tree()
     info = infoNode()
-    gramTree.create_node(tag=ffp.S, identifier=id, data=info)
+    gramTree.create_node(tag=S, identifier=id, data=info)
     cur_node = gramTree.get_node(id)
     id += 1
     for token in tokens:
         while cur_node.tag != token:
             match_tag = False
-            for formula in ffp.dic[cur_node.tag].split(' | '):
-                if token in ffp.predictSet[cur_node.tag + ' = ' + formula]:
+            for formula in dic[cur_node.tag].split(' | '):
+                if token in predictSet[cur_node.tag + ' = ' + formula]:
                     match_tag = True
                     # 创建结点
                     vl = formula.split(' ')

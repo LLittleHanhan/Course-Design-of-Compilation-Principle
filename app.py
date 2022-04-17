@@ -106,7 +106,7 @@ class LeftTabWidget(QWidget):
         self.set_lex(res)
 
         parse = QWebEngineView()
-        parse.load(QUrl(QFileInfo("2.YUFA/GrammarTree.html").absoluteFilePath()))
+        parse.load(QUrl(QFileInfo("Grammar/GrammarTree.html").absoluteFilePath()))
         self.stackedWidget.addWidget(parse)
 
         # 再模拟20个右侧的页面(就不和上面一起循环放了)
