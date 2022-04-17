@@ -1,17 +1,78 @@
-PROGRAM ID
-TYPE ID = INTEGER ;
-VAR INTEGER ID , ID ;
-PROCEDURE ID ( INTEGER ID ) ;
-VAR INTEGER ID ;
-BEGIN
-ID := ID ;
-WRITE ( ID )
-END
-BEGIN
-READ ( ID ) ;
-IF ID < INTC
-THEN ID := ID + INTC
-ELSE ID := ID - INTC
-FI ;
-ID ( ID )
-END .
+2 PROGRAM program
+2 ID sd
+3 TYPE type
+3 ID i
+3 EQ =
+3 INTEGER integer
+3 SEMI ;
+4 ID sarray
+4 EQ =
+4 ARRAY array
+4 LMIDPAREN [
+4 INTC 0
+4 UNDERRANGE ..
+4 INTC 5
+4 RMIDPAREN ]
+4 OF of
+4 INTEGER integer
+4 SEMI ;
+5 VAR var
+5 ID i
+5 ID x
+5 SEMI ;
+6 ID sarray
+6 ID y
+6 SEMI ;
+7 INTEGER integer
+7 ID ss
+7 SEMI ;
+8 PROCEDURE procedure
+8 ID sd
+8 LPAREN (
+8 INTEGER integer
+8 ID a
+8 RPAREN )
+8 SEMI ;
+9 BEGIN begin
+10 WRITE write
+10 LPAREN (
+10 ID a
+10 RPAREN )
+11 END end
+12 BEGIN begin
+13 ID ss
+13 ASSIGN :=
+13 INTC 0
+13 SEMI ;
+14 WHILE while
+14 ID ss
+14 LT <
+14 INTC 6
+14 DO do
+15 ID y
+15 LMIDPAREN [
+15 ID ss
+15 RMIDPAREN ]
+15 ASSIGN :=
+15 ID ss
+15 SEMI ;
+16 ID x
+16 ASSIGN :=
+16 ID y
+16 LMIDPAREN [
+16 ID ss
+16 RMIDPAREN ]
+16 SEMI ;
+17 ID sd
+17 LPAREN (
+17 ID x
+17 RPAREN )
+17 SEMI ;
+18 ID ss
+18 ASSIGN :=
+18 ID ss
+18 PLUS +
+18 INTC 1
+19 ENDWH endwh
+20 END end
+20 DOT .

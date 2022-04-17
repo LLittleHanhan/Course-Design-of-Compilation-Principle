@@ -12,7 +12,7 @@ class lex:
                     "while": 'WHILE',"do": 'DO',
                     "endwh": 'ENDWH',"read": 'READ',
                     "write": 'WRITE', "return": 'RETURN',
-                    "integer": 'INTEGER_T'}
+                    "integer": 'INTEGER'}
     lex_tag={'PROGRAM': "PROGRAM",'TYPE': "TYPE",
              'VAR': "VAR",'PROCEDURE': "PROCEDURE",
              'BEGIN': "BEGIN",'END': "END",
@@ -166,14 +166,22 @@ class lex:
             val=val[0:-1]
             val=re.sub(r"{.*}",'',val)
             token.append(self.scan(val,i))
+        token = list(filter(None, token))
+        with open("rsc/token.txt", "w") as f:
+            with open("rsc/vt.txt", "w") as t:
+                for v in token:
+                    for res in v:
+                        c=str(res['LINE'])+' '+res['LEX']+' '+res['SEM']+'\n'
+                        t.write(res['LEX']+' ')
+                        f.writelines(c)
         return token
+'''
+
 '''
 l=lex()
 a=l.run('example/c1.txt')
 for i,val in enumerate(a):
     print(val)
-'''
-
 
 
 
