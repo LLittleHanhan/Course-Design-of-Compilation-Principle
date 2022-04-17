@@ -33,7 +33,14 @@ class recType:
     def __init__(self):
         self.size = None
         self.kind = "recordTy"
-        self.body
+        self.elem = []
+
+class structType:
+    def __init__(self):
+        self.size
+        self.kind
+        self.elemType
+        self.elem
 
 class fieldChain:
     def __init__(self):
@@ -45,4 +52,5 @@ class fieldChain:
 class typeIR:
     def __init__(self):
         self.size
-        self.
+        self.kind  #base or structure
+        self.elem
