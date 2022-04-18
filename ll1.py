@@ -1,4 +1,4 @@
-from var import tokens, S, dic, predictSet, gramTree
+from var import tokens, S, dic, predictSet, gramTree,infoNode
 
 
 # 异常处理
@@ -9,13 +9,6 @@ class grammarError(Exception):
 
     def __str__(self):
         return self.ErrorInfo
-
-
-# 记录token信息
-class infoNode:
-    def __init__(self, nextBrotherId=-1, tokenInfo=None):
-        self.nextBrotherId = nextBrotherId
-        self.tokenInfo = tokenInfo
 
 
 def ll1(token_path):

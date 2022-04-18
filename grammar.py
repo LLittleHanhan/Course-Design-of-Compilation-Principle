@@ -1,4 +1,4 @@
-from var import vt_path, formula_path, predict_path, token_path
+from var import vt_path, formula_path, predict_path, token_path,gramTree
 from ffp import generateFFTSet
 from ll1 import ll1, grammarError
 from visualization import visualization
