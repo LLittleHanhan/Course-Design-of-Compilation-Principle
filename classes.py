@@ -18,9 +18,9 @@ class procIR:
         self.size = None
 
 class standardType:
-    def __init__(self):
+    def __init__(self,t):
         self.size = 1
-        self.kind = None
+        self.kind = t
 
 class arrType:
     def __init__(self):
