@@ -176,12 +176,12 @@ class lex:
                         f.writelines(c)
         return token
 '''
-
-'''
 l=lex()
 a=l.run('example/c1.txt')
 for i,val in enumerate(a):
     print(val)
+'''
+
 
 
 
