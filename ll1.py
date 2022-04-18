@@ -29,12 +29,13 @@ def ll1(token_path):
     tokensLen = len(tokens)
     while i < tokensLen:
         token = tokens[i]
+        empty_tag = False
         while cur_node.tag != token["lex"] and cur_node.tag != '$':
-            match_tag = False
+            branch_tag = False
             empty_tag = False
             for formula in dic[cur_node.tag].split(' | '):
                 if token["lex"] in predictSet[cur_node.tag + ' = ' + formula]:
-                    match_tag = True
+                    branch_tag = True
                     # 创建结点
                     vl = formula.split(' ')
                     cur_id = 0
@@ -47,17 +48,17 @@ def ll1(token_path):
                         id += 1
                     cur_node = gramTree.get_node(cur_id)
                     if cur_node.tag == '$':
-                        i -= 1
                         empty_tag = True
                     break
-            if not match_tag:
+            if not branch_tag:
                 err = '出现语法错误!' + '\n' + 'line:' + token["line"] +'\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + token["sem"]
                 raise grammarError(err)
         # 匹配成功
         if not empty_tag:
+            i += 1
             cur_node.data.tokenInfo = token
         # token序列前进
-        i += 1
+
         # grammarTree回溯
         root_tag = False
         while cur_node.data.nextBrotherId == -1:
@@ -77,5 +78,5 @@ def ll1(token_path):
             err = '出现语法错误!' + '\n' + '语句残缺'
             raise grammarError(err)
         # if root_tag and i == tokensLen:
-    gramTree.show()
+    #gramTree.show()
     return
