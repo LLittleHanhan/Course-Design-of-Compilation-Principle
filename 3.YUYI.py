@@ -5,6 +5,7 @@ import var
 
 def analyze():
     initialize()
+    travelsal(var.gramTree)
 
 def initialize():
     intType = standardType("intType")
