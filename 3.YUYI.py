@@ -22,4 +22,5 @@ def travelsal(root):
     for i in temp:
         travelsal(i)
 
+#遍历树
 analyze()
