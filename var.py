@@ -18,3 +18,11 @@ followSet = {}  # follow集
 predictSet = {}  # predict集
 
 gramTree = Tree()
+
+# 记录token信息
+class infoNode:
+    def __init__(self, nextBrotherId=-1, tokenInfo=None):
+        self.nextBrotherId = nextBrotherId
+        self.tokenInfo = tokenInfo
+
+
