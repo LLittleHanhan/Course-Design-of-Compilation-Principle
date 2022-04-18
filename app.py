@@ -16,7 +16,8 @@ from random import randint
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QListWidget, QStackedWidget, QHBoxLayout, \
-    QListWidgetItem, QLabel, QTableWidget, QTableWidgetItem, QAbstractItemView, QHeaderView
+    QListWidgetItem, QLabel, QTableWidget, QTableWidgetItem, QAbstractItemView, QHeaderView, QMenu, QPushButton, \
+    QVBoxLayout, QAction, QMainWindow, qApp, QMenuBar
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QUrl
 
@@ -25,26 +26,53 @@ class LeftTabWidget(QWidget):
     def __init__(self, *args, **kwargs):
         super(LeftTabWidget, self).__init__(*args, **kwargs)
         self.resize(1000, 800)
+
         # 左右布局(左边一个QListWidget + 右边QStackedWidget)
         layout = QHBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
         # 左侧列表
         self.listWidget = QListWidget(self)
-        layout.addWidget(self.listWidget)
+
         # 右侧层叠窗口
         self.stackedWidget = QStackedWidget(self)
-        layout.addWidget(self.stackedWidget)
+        vbox = QVBoxLayout()
+        #菜单栏
+        menu_bar = QMenuBar()
+        menu_bar.addMenu('file')
+        #封装进vbox
+        vbox.addWidget(menu_bar)
+        vbox.addWidget(self.stackedWidget)
         self.initUi()
 
+
+        content=QWidget()
+        content.setLayout(vbox)
+        #左选项 右菜单＋窗口
+        layout.addWidget(self.listWidget)
+        layout.addWidget(content)
+
+        self.setLayout(layout)
+
+
+
+
+
+
+
+
+
     def set_left_list(self,text):
-        item = QListWidgetItem(
-            QIcon('Data/0%d.ico' % randint(1, 8)), str(text), self.listWidget)
+        item = QListWidgetItem(str(text), self.listWidget)
         # 设置item的默认宽高(这里只有高度比较有用)
         item.setSizeHint(QSize(16777215, 60))
         # 文字居中
         item.setTextAlignment(Qt.AlignCenter)
 
     def set_lex(self,res):
+        res=[]
+        with open('rsc/token.txt') as f:
+            data=f.readlines()
+        #print(data)
         LEX = QTableWidget()
         LEX.setColumnCount(3)
         LEX.setHorizontalHeaderLabels(['line', 'LEX', 'SEM'])
@@ -54,23 +82,24 @@ class LeftTabWidget(QWidget):
         LEX.setEditTriggers(QAbstractItemView.NoEditTriggers)
         # 整行选中
         LEX.setSelectionBehavior(QAbstractItemView.SelectRows)
-        i = 0
         count = 0
         for v in res:
             count = count + len(v)
+        count=len(data)
         LEX.setRowCount(count)
-        for v in res:
-            for val in v:
-                newItem = QTableWidgetItem(str(val['LINE']))
-                newItem.setTextAlignment(Qt.AlignCenter)
-                LEX.setItem(i, 0, newItem)
-                newItem = QTableWidgetItem(val['LEX'])
-                newItem.setTextAlignment(Qt.AlignCenter)
-                LEX.setItem(i, 1, newItem)
-                newItem = QTableWidgetItem(val['SEM'])
-                newItem.setTextAlignment(Qt.AlignCenter)
-                LEX.setItem(i, 2, newItem)
-                i = i + 1
+        for k,v in enumerate(data):
+            v=v[0:-1]
+            v=v.split()
+            print(v)
+            newItem = QTableWidgetItem(v[0])
+            newItem.setTextAlignment(Qt.AlignCenter)
+            LEX.setItem(k, 0, newItem)
+            newItem = QTableWidgetItem(v[1])
+            newItem.setTextAlignment(Qt.AlignCenter)
+            LEX.setItem(k, 1, newItem)
+            newItem = QTableWidgetItem(v[2])
+            newItem.setTextAlignment(Qt.AlignCenter)
+            LEX.setItem(k, 2, newItem)
 
         self.stackedWidget.addWidget(LEX)
 
@@ -106,7 +135,7 @@ class LeftTabWidget(QWidget):
         self.set_lex(res)
 
         parse = QWebEngineView()
-        parse.load(QUrl(QFileInfo("Grammar/GrammarTree.html").absoluteFilePath()))
+        parse.load(QUrl(QFileInfo("rsc/GrammarTree.html").absoluteFilePath()))
         self.stackedWidget.addWidget(parse)
 
         # 再模拟20个右侧的页面(就不和上面一起循环放了)
@@ -120,10 +149,37 @@ class LeftTabWidget(QWidget):
 
 
 
+
+class basicMenubar(QMainWindow):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.initUI()
+
+    def initUI(self):
+        #self.setGeometry(200, 200, 200, 200)
+
+        exitAction = QAction('&Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Exit application')
+        exitAction.triggered.connect(qApp.quit)
+
+        #self.statusBar()
+
+        menubar = self.menuBar()
+
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(exitAction)
+
+        self.setWindowTitle('PyQt5 Basic Menubar')
+
+        #self.show()
+
 # 美化样式表
 Stylesheet = """
 /*去掉item虚线边框*/
-QListWidget, QListView, QTreeWidget, QTreeView {
+QListWidget, QListView, QTreeWidget, QTreeView, QMenuBar {
     outline: 0px;
 }
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
@@ -151,20 +207,30 @@ QStackedWidget {
 QLabel {
     color: white;
 }
+QMenuBar {
+    background: rgb(238,238,238);
+    color: rgb(#EEEEEE);
+}
 """
 
 if __name__ == '__main__':
     import sys
-    '''
-        l = lex()
-        a = l.run('example/c1.txt')
-        for k in a:
-            print(k)
-    '''
-
 
     app = QApplication(sys.argv)
     app.setStyleSheet(Stylesheet)
     w = LeftTabWidget()
     w.show()
     sys.exit(app.exec_())
+
+
+'''
+        app = QApplication(sys.argv)
+    w = Window()
+    w.resize(400, 400)
+    w.show()
+        l = lex()
+        a = l.run('example/c1.txt')
+        for k in a:
+            print(k)
+
+'''
