@@ -1,4 +1,4 @@
-from classes import *
+from symbol import *
 import grammar
 import var
 from treelib import node
