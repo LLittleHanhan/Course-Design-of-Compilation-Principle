@@ -41,6 +41,7 @@ class lex:
 
     def error(self,line):
         print("error in line "+str(line))
+        #exit(1)
         return {'LINE':line,'LEX':'ERROR','SEM':'NONE'}
 
 
@@ -75,7 +76,7 @@ class lex:
                 re['SEM'] = temp
                 result.append(re)
                 #print(re)
-                #print(result)
+                #print(re)
 
             elif ch[i].isdigit():                                  #如果字符是数字
                 temp = ''
@@ -105,8 +106,7 @@ class lex:
             elif ch[i]==':':
                 i+=1
                 if i==Len:
-                    print("unexpected char : in line"+line)
-                    return
+                    return self.error(line)
                 if ch[i]=='=':
                     re = {}
                     re['LINE'] = line
@@ -135,14 +135,15 @@ class lex:
             elif ch[i]=="'":
                 i += 1
                 if i == Len:
-                    print("unexpected char : in line" + line)
-                    return
-                temp=''
-                while ch[i].isalpha() == True or ch[i].isdigit() == True:  # 以该字母起始的字母或数字记录为标识符
-                    temp += ch[i]                                          # temp存放标识符
-                    i += 1
+                    return self.error(line)
+                #temp=''
+                if ch[i].isalpha() == True or ch[i].isdigit() == True:
+                    temp=ch[i]
+                    i+=1
                     if i == Len:
                         return self.error(line)
+                else:
+                    return self.error(line)
                 if ch[i]=="'":
                     re = {}
                     re['LINE'] = line
@@ -154,18 +155,23 @@ class lex:
                     return self.error(line)
 
             else:
+                print('qwe')
                 return self.error(line)
         return result
 
     def run(self,path):
-        with open(path, "r") as f:
+        with open(path, "r",encoding='utf-8') as f:
             data = f.readlines()
         #print(data)
         token=[]
         for i,val in enumerate(data):
             val=val[0:-1]
             val=re.sub(r"{.*}",'',val)
-            token.append(self.scan(val,i))
+            val=re.sub('\t',' ',val)
+            #print(val)
+            t=self.scan(val,i)
+            token.append(t)
+            #print(t)
         token = list(filter(None, token))
         with open("rsc/token.txt", "w") as f:
             with open("rsc/vt.txt", "w") as t:
@@ -177,11 +183,11 @@ class lex:
         return token
 '''
 l=lex()
-a=l.run('example/c1.txt')
+a=l.run('example/exp.txt')
 for i,val in enumerate(a):
     print(val)
-'''
 
+'''
 
 
 
