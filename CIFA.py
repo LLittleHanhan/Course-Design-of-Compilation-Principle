@@ -174,16 +174,14 @@ class lex:
             #print(t)
         token = list(filter(None, token))
         with open("rsc/token.txt", "w") as f:
-            with open("rsc/vt.txt", "w") as t:
                 for v in token:
                     for res in v:
                         c=str(res['LINE'])+' '+res['LEX']+' '+res['SEM']+'\n'
-                        t.write(res['LEX']+' ')
                         f.writelines(c)
         return token
 '''
 l=lex()
-a=l.run('example/exp.txt')
+a=l.run('example/c5.txt')
 for i,val in enumerate(a):
     print(val)
 
