@@ -1,20 +1,8 @@
-'''
-@author: badmonkey
-@software: PyCharm
-@file: symbol.py
-@time: 2021/4/18 下午6:48
-'''
 class Symbol(object):
-    """
-    三种类型的标识符，var,type,procedure
-    var -> (name,kind,type,access,level,off,value)
-    type -> (name,kind,type)
-    procedure -> (name,kind,type,level,off,param,Class,code,size,forward)
-    """
     def __init__(self,name=None,kind=None,type=None,value=None,access=None,level=None,offset=None,param=None,Class=None,code=None,Size=None,forward=None):
         self.name = name
-        self.decKind = kind
-        self.typePtr = type
+        self.decKind = kind  #标识符类型
+        self.typePtr = type  #数据类型
         self.value = value
         self.access = access
         self.level = level
@@ -71,7 +59,6 @@ class SymbolTable(object):
         return self.table[item]
 
 
-
 class BaseType(object):
     def __init__(self,sz=1,kind=None):
         self.sz = sz
@@ -98,6 +85,9 @@ class RecordType(object):
 
     def __repr__(self):
         return "record %s"%(self.fieldList)
+
+
+
 
 import json
 import sys
