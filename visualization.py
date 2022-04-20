@@ -1,9 +1,8 @@
 from pyecharts import options as opts
 from pyecharts.charts import Tree
-from var import gramTree
+from var import gramTree,grammarTree_path
 
 def my_to_dict(self, nid=None):
-    """Transform the whole tree into a dict."""
     nid = self.root if (nid is None) else nid
     ntag = self[nid].tag
     tree_dict = {"name": ntag, "children": []}
@@ -33,6 +32,6 @@ def visualization():
             ),
         )
             .set_global_opts(title_opts=opts.TitleOpts(title="GrammarTree"))
-            .render("rsc/GrammarTree.html")
+            .render(grammarTree_path)
     )
     return

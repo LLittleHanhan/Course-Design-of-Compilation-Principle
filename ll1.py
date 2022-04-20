@@ -51,7 +51,7 @@ def ll1(token_path):
                         empty_tag = True
                     break
             if not branch_tag:
-                err = '出现语法错误!' + '\n' + 'line:' + token["line"] +'\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + token["sem"]
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] +'\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + token["sem"]
                 raise grammarError(err)
         # 匹配成功
         if not empty_tag:

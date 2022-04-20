@@ -42,6 +42,7 @@ def genFirstSet(key):
     # 生成cfirst集和ffirst集
     for formula in dic[key].split(' | '):
         ffirstSet[key + ' = ' + formula] = set()
+        flag = 0
         for v in formula.split(' '):
             flag = 0
             if v in vt:

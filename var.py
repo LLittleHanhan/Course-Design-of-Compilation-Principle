@@ -5,7 +5,8 @@ formula_path = 'rsc/formula.txt'
 vt_path = 'rsc/vt.txt'
 predict_path = 'rsc/predict.txt'
 token_path = 'rsc/token.txt'
-
+grammar_result_path = 'rsc/grammar_result.txt'
+grammarTree_path = 'rsc/GrammarTree.html'
 
 dic = {}  # 产生式
 tokens = []  # token序列
