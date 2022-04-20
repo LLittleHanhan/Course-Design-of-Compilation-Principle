@@ -1,7 +1,8 @@
 from sem1 import *
 from sem2 import *
 from symbol import *
-
+import var
+import grammar
 class myState():
     START="start"
     TYPEDEC="typedec"
@@ -52,12 +53,10 @@ class Analyzer(object):
     def __repr__(self):
         print(self.symTable)
         return ""
-
+#遍历，获取节点信息
     def updateIndex(self):
         if self.current.getTokenVal() != 'ε' and (self.current.getTokenVal() or self.current.getTokenVal() == 0) :
             self.index += 1
-            # print(self.index,self.tokens[self.index-1][0],self.current.getTokenVal())
-
     def step(self):
         if self.current.isEmpty():
             self.current = self.current.step()
@@ -67,13 +66,11 @@ class Analyzer(object):
     def stepInto(self,tokenType):
         while not self.current.isTokenType(tokenType):
             self.step()
-
     def preToken(self):
         if self.index - 2 >0 :
             return self.tokens[self.index-2][1]
         else:
             return None
-
     def nextToken(self):
         if self.index < len(self.tokens):
             return self.tokens[self.index][1]
@@ -89,7 +86,7 @@ class Analyzer(object):
             return self.tokens[self.index-1][1]
         else:
             return None
-
+#输出错误信息
     def printError(self,var=None):
         if not self.printerror and self.tokens[self.index-1][-1] == self.errorLine:
             pass
@@ -99,12 +96,6 @@ class Analyzer(object):
             else:
                 self.out.write("line %d, Error: %s %s %s\n"%(self.tokens[self.index-1][-1],self.tokens[self.index-1][0],self.currentToken(),self.errorMessage))
 
-    def assignTypeCheck(self,leftType,rightType):
-        if leftType == "INTEGER":
-            return rightType == "INTEGER" or rightType == "INTC"
-        else:
-            return leftType == rightType
-
 
     def analyze(self):
         self.current = self.root.firstChild()
@@ -112,31 +103,24 @@ class Analyzer(object):
         self.declarePart()
         self.programBody()
         self.out.close()
+
     def programHead(self):
         self.stepInto("ProgramName")
         self.stepInto("ID")
-
-
-
     def declarePart(self):
         self.stepInto("DeclarePart")
         self.typeDec()
         self.varDec()
         self.procDec()
-        # print(self.scope)
-        # pass
-
     def programBody(self):
         self.stepInto("BEGIN")
         self.stmList()
         self.stepInto("END")
-        # pass
 
     def typeDec(self):
         self.stepInto("TypeDec")
         self.step()
         if self.current.isTokenType("ε"):
-            # 没有类型定义部分
             return
         else:
             self.stepInto("TypeDecList")
@@ -160,7 +144,6 @@ class Analyzer(object):
                     else:
                         pass
                     self.stepInto("TypeDecMore")
-
     def varDec(self):
         self.stepInto("VarDec")
         self.step()
@@ -192,8 +175,6 @@ class Analyzer(object):
 
                             self.stepInto("VarIdMore")
                     self.stepInto("VarDecMore")
-        # pass
-
     def procDec(self):
         curSymTab = self.symTable
         self.stepInto("ProcDec")
@@ -247,7 +228,6 @@ class Analyzer(object):
                                             if param.name not in self.symTable:
                                                 self.symTable.add(param)
                                             else:
-                                                # 参数重名
                                                 self.error = True
                                                 self.errorMessage = semanticError.duplicateDefine
                                                 self.printError()
@@ -259,6 +239,7 @@ class Analyzer(object):
                     self.programBody()
                     self.symTable = curSymTab
                     self.stepInto("ProcDecMore")
+
     def stmList(self):
         self.stepInto("Stm")
         while True:
@@ -266,10 +247,8 @@ class Analyzer(object):
                 break
             else:
                 self.stepInto("Stm")
-                # print("debug",self.current.getTokenType())
                 curStm = self.current.firstChild().getTokenType()
-                # if curStm == ";":
-
+                #前五种直接交给函数处理
                 if curStm == "ConditionalStm":
                     self.conditionalStm()
                 elif curStm == "LoopStm":
@@ -280,8 +259,8 @@ class Analyzer(object):
                     self.outputStm()
                 elif curStm == "ReturnStm":
                     self.returnStm()
+                    #访问数组元素，或者结构变量，或者函数访问
                 elif curStm == "ID":
-                    # ID
                     self.stepInto("ID")
                     idName = self.current.getTokenVal()
                     self.stepInto("AssCall")
@@ -289,6 +268,7 @@ class Analyzer(object):
                     decision = self.current.getTokenType()
                     varError = True
                     var = None
+                    #检查所有符号表，查是否定义
                     for symTable in self.scope[::-1]:
                         if idName in symTable:
                             varError = False
@@ -297,20 +277,18 @@ class Analyzer(object):
                         self.error = True
                         self.errorMessage = semanticError.unDefinedVar
                         self.printError()
+                    #处理赋值语句
                     if decision == "AssignmentRest":
-                        # 赋值语句
                         varType = None
                         self.stepInto("VariMore")
                         self.step()
                         choice = self.current.getTokenType()
-                        # print("!!!!!",choice)
                         if choice == "ε":
                             if not varError:
                                 varType = var.typePtr.type
-                                # print("!!!",varType)
-                            # pass
                         elif choice == "[":
                             indType,indVal = self.expresion()
+                    #检查数组下标
                             if indType not in ["INTEGER","INTC"]:
                                 self.error = True
                                 self.errorMessage = semanticError.typeMatchError%("INTC",indType)
@@ -321,13 +299,14 @@ class Analyzer(object):
                             self.stepInto("FieldVar")
                             self.stepInto("ID")
                             fieldName = self.current.getTokenVal()
+                    #处理域访问
+                            #标识符不是域名
                             if var.typePtr.type != "recordType":
-                                # 访问非结构体变量
                                 self.error = True
                                 self.errorMessage = semanticError.typeMatchError % ("recordType", var.typePtr.type)
                                 self.printError(var)
                             else:
-                                # 成员变量未定义
+                            #域成员不存在
                                 if fieldName not in var.typePtr.fieldList:
                                     self.error = True
                                     self.errorMessage = semanticError.undefinedField
@@ -339,10 +318,10 @@ class Analyzer(object):
                                     self.step()
                                     if self.current.isTokenType("ε"):
                                         varType = field.typePtr.type
-                                        # print("!!!",varType)
                                         pass
                                     elif self.current.isTokenType("["):
                                         indType, indVal = self.expresion()
+                            #域中数组检查
                                         if indType not in ["INTEGER", "INTC"]:
                                             self.error = True
                                             self.errorMessage = semanticError.typeMatchError % ("INTC", indType)
@@ -351,19 +330,15 @@ class Analyzer(object):
                                             varType = field.typePtr.element.type
                         self.stepInto(":=")
                         rightType,rigthVal = self.expresion()
-                        # print("debug",var,varType,rightType)
                         if varType and not varError:
                             if not self.assignTypeCheck(varType,rightType):
                                 self.error = True
                                 self.errorMessage = semanticError.typeMatchError%(varType,rightType)
                                 self.printError()
-
-                        # varType = var.
-
-                        # pass
+                    #处理函调语句
                     elif decision == "CallStmRest":
-                        # 过程调用
                         self.stepInto("ActParamList")
+                        #参数检查
                         actParamList = []
                         while True:
                             if self.current.isTokenType("ActParamMore") and self.current.firstChild().isTokenType("ε"):
@@ -377,21 +352,16 @@ class Analyzer(object):
                         actParamLen = len(actParamList)
                         paramList = SymbolTable()
                         if not varError:
-                            # 标识符存在
-                            # print(var)
+                            #函数名检查
                             if var.decKind != "procDec":
-                                # print("debug",var)
-                                # 非过程标识符
                                 self.error = True
                                 self.errorMessage = semanticError.procedureCallError
                                 self.printError(var)
                             else:
-                                # 过程标识符存在
-                                # print(var.)
                                 paramList = var.param
                                 paramLen = len(paramList)
+                                #检查参数匹配
                                 if paramLen != actParamLen:
-                                    # num invalid
                                     self.error = True
                                     self.errorMessage = semanticError.paramNumError%(paramLen,actParamLen)
                                     self.printError(var)
@@ -401,6 +371,7 @@ class Analyzer(object):
                                             continue
                                         expect = paramList[i].typePtr.type
                                         got = actParamList[i]
+                                #检查类型匹配
                                         if not self.assignTypeCheck(expect,got):
                                             self.error = True
                                             self.errorMessage = semanticError.typeMatchError%(expect,got)
@@ -408,12 +379,46 @@ class Analyzer(object):
                 self.stepInto("StmMore")
 
         pass
+
+    def conditionalStm(self):
+        self.stepInto("IF")
+        condition = self.relExp()
+        self.stepInto("THEN")
+        self.stmList()
+        self.stepInto("ELSE")
+        self.stmList()
+        self.stepInto("FI")
+        # pass
+    def loopStm(self):
+        self.stepInto("WHILE")
+        condition = self.relExp()
+        self.stepInto("DO")
+        self.stmList()
+        self.stepInto("ENDWH")
+        pass
+    def inputStm(self):
+        self.stepInto("InputStm")
+        self.stepInto("READ")
+        self.stepInto("Invar")
+        self.stepInto("ID")
+        idName = self.current.getTokenVal()
+        #检查是否声明
+        if idName not in self.symTable:
+            self.error = True
+            self.errorMessage = semanticError.unDefinedVar
+            self.printError()
+        # pass
+    def outputStm(self):
+        self.stepInto("OutputStm")
+        self.stepInto("WRITE")
+        self.expresion()
+    def returnStm(self):
+        self.stepInto("ReturnStm")
+        self.stepInto("RETURN")
+        self.expresion()
     def typeName(self):
+        #读标识符，检错，建表
         self.stepInto("TypeName")
-        # self
-        """
-        三种情况 ID BaseType StructureType
-        """
         choice  = self.current.firstChild().getTokenType()
         self.stepInto(choice)
         if choice == "ID":
@@ -422,19 +427,14 @@ class Analyzer(object):
                 sym = self.symTable.get(idName)
                 return sym.typePtr
             else:
-                # 未定义 type
                 self.error = True
                 self.errorMessage = semanticError.unDefinedType
                 self.printError()
                 self.printerror = False
                 return None
-            # pass
         elif choice == "BaseType":
             return self.baseType()
         elif choice == "StructureType":
-            """
-            两种情况 ArrayType 或者  RecType
-            """
             structType = self.current.firstChild().getTokenType()
             self.stepInto(structType)
             if structType == "ArrayType":
@@ -461,7 +461,6 @@ class Analyzer(object):
                                 self.stepInto("ID")
                                 sym = Symbol(kind="varDec",type=fieldType,name=self.current.getTokenVal())
                                 if sym.name in fieldList:
-                                    # 成员变量重复定义
                                     self.error = True
                                     self.errorMessage = semanticError.duplicateDefine%(sym.name)
                                     self.printError(sym)
@@ -473,6 +472,7 @@ class Analyzer(object):
                 recType = RecordType(fieldList=fieldList)
                 return recType
     def arrayType(self):
+        #数组声明，上下限检查
         self.stepInto("ArrayType")
         self.stepInto("Low")
         self.stepInto("INTC")
@@ -485,7 +485,6 @@ class Analyzer(object):
         bType = BaseType(kind=self.current.getTokenType())
         typePtr = ArrayType(sz=top - low, low=low, top=top, element=bType)
         if low < 0 or (low >= top):
-            # 非法数组定义
             self.error = True
             self.errorMessage = semanticError.arrayDefineError
             self.printError()
@@ -498,10 +497,7 @@ class Analyzer(object):
         typePtr = BaseType(kind=self.current.getTokenType())
         return typePtr
     def expresion(self):
-        """
-
-        :return: 类型 和 数值
-        """
+        #表达式检查模块
         self.stepInto("Exp")
         leftType,leftVal = self.term()
         self.stepInto("OtherTerm")
@@ -521,7 +517,11 @@ class Analyzer(object):
         if expError:
             leftType,leftVal = None,None
         return leftType,leftVal
-        # pass
+    def assignTypeCheck(self,leftType,rightType):
+        if leftType == "INTEGER":
+            return rightType == "INTEGER" or rightType == "INTC"
+        else:
+            return leftType == rightType
     def term(self):
         self.stepInto("Term")
         leftType,leftVal = self.factor()
@@ -553,16 +553,12 @@ class Analyzer(object):
         elif choice == "Variable":
             return self.variable()
     def variable(self):
-        """
-
-        :return: 类型和数值
-        """
+        #变量检查
         self.stepInto("Variable")
         self.stepInto("ID")
         varName = self.current.getTokenVal()
         var = None
         varError = False
-        # print(self.scope[::-1])
         for symTable in self.scope[::-1]:
             if varName in symTable:
                 var = symTable.get(varName)
@@ -579,8 +575,6 @@ class Analyzer(object):
             if varError:
                 return None,None
             else:
-                # 可能会返回 数组 和 结构ti类型
-                # print("debug",var)
                 return var.typePtr.type,var.value
         elif choice == "[":
             return self.expresion()
@@ -589,12 +583,10 @@ class Analyzer(object):
             self.stepInto("ID")
             fieldName = self.current.getTokenVal()
             if var.typePtr.type != "recordType":
-                # 访问非结构体变量
                 self.error = True
                 self.errorMessage = semanticError.typeMatchError%("recordType",var.typePtr.type)
                 self.printError(var)
             else:
-                # 成员变量未定义
                 if fieldName not in var.typePtr.fieldList:
                     self.error = True
                     self.errorMessage = semanticError.undefinedField
@@ -607,7 +599,6 @@ class Analyzer(object):
                         self.expresion()
                         return None,None
                 else:
-                    #
                     field = var.typePtr.fieldList.get(fieldName)
                     self.stepInto("FieldVarMore")
                     self.step()
@@ -622,46 +613,8 @@ class Analyzer(object):
                             return None,None
                         else:
                             return field.typePtr.element.type,None
-    def conditionalStm(self):
-        self.stepInto("IF")
-        condition = self.relExp()
-        self.stepInto("THEN")
-        self.stmList()
-        self.stepInto("ELSE")
-        self.stmList()
-        self.stepInto("FI")
-        # pass
-    def loopStm(self):
-        self.stepInto("WHILE")
-        condition = self.relExp()
-        self.stepInto("DO")
-        self.stmList()
-        self.stepInto("ENDWH")
-        pass
-    def inputStm(self):
-        self.stepInto("InputStm")
-        self.stepInto("READ")
-        self.stepInto("Invar")
-        self.stepInto("ID")
-        idName = self.current.getTokenVal()
-        if idName not in self.symTable:
-            self.error = True
-            self.errorMessage = semanticError.unDefinedVar
-            self.printError()
-        # pass
-    def outputStm(self):
-        self.stepInto("OutputStm")
-        self.stepInto("WRITE")
-        self.expresion()
-    def returnStm(self):
-        self.stepInto("ReturnStm")
-        self.stepInto("RETURN")
-        self.expresion()
-    def relExp(self):
-        """
 
-        :return: 返回是否是bool值
-        """
+    def relExp(self):
         self.stepInto("RelExp")
         leftType,leftVal = self.expresion()
         self.stepInto("CmpOp")
@@ -690,6 +643,9 @@ def sem_run(filename):
     astfile = open("sem_result.txt","w")
     json.dump(root,astfile,cls=AstNodeEncoder)
     astfile.close()
+
+
+
     analyzer = Analyzer(tokens,root)
     analyzer.analyze()
     return analyzer.error
