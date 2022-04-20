@@ -65,6 +65,7 @@ class Token():
         self.tokentype = tokentype
         self.value = value
         self.line = line
+
 import sys
 
 def Scan(scanner):
