@@ -15,6 +15,7 @@ def my_to_dict(self, nid=None):
             tree_dict = {"name": ntag}
         return tree_dict
 
+
 def visualization(width="1000px",height="1000px"):
     gramTreeDic = my_to_dict(gramTree)
     c = (

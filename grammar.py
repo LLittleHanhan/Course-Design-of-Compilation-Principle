@@ -6,6 +6,7 @@ import recursive_descent
 import  os
 
 
+
 def check_grammar(mode=0):
     '''
     mode = 0 为ll1
