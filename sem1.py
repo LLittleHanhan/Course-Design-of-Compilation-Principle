@@ -1,7 +1,5 @@
 grammar = {
-    # 起始符
     "S":"Program",
-    # 产生式
     "P":{
         'Program': {0: ['ProgramHead', 'DeclarePart', 'ProgramBody','.']},
         'ProgramHead': {0: ['PROGRAM', 'ProgramName']},
@@ -75,17 +73,13 @@ grammar = {
         'AddOp': {0: ['+'], 1: ['-']},
          'MultOp': {0: ['*'], 1: ['/']}}
     ,
-    # 非终极符
     "VN": ["ActParamList", "ActParamMore", "AddOp", "ArrayType", "AssCall", "AssignmentRest", "BaseType", "CallStmRest", "CmpOp", "ConditionalStm", "DeclarePart", "Exp", "Factor", "FidMore", "FieldDecList", "FieldDecMore", "FieldVar", "FieldVarMore", "FormList", "IdList", "IdMore", "InputStm", "Invar", "LoopStm", "Low", "MultOp", "OtherFactor", "OtherRelE", "OtherTerm", "OutputStm", "Param", "ParamDecList", "ParamList", "ParamMore", "ProcBody", "ProcDec", "ProcDecMore", "ProcDecPart", "ProcDeclaration", "ProcName", "Program", "ProgramBody", "ProgramHead", "ProgramName", "RecType", "RelExp", "ReturnStm", "Stm", "StmList", "StmMore", "StructureType", "Term", "Top", "TypeDec", "TypeDecList", "TypeDecMore", "TypeDeclaration", "TypeId", "TypeName", "VarDec", "VarDecList", "VarDecMore", "VarDeclaration", "VarIdList", "VarIdMore", "VariMore", "Variable"],
-    # 终极符
     "VT": ["(", ")", "*", "+", ",", "-", ".", "..", "/", ":=", ";", "<", "=", "ARRAY", "BEGIN", "CHAR", "DO", "ELSE", "END", "ENDWH", "FI", "ID", "IF", "INTC", "INTEGER", "OF", "PROCEDURE", "PROGRAM", "READ", "RECORD", "RETURN", "THEN", "TYPE", "VAR", "WHILE", "WRITE", "[", "]"],
-    # 空
     "NN": ["ε"]
 }
 
 def firstSet(grammar,leftSymbol):
     result = set()
-    # situation one
     if leftSymbol in grammar["VT"] or leftSymbol == 'ε':
         result.add(leftSymbol)
         return result
@@ -94,8 +88,6 @@ def firstSet(grammar,leftSymbol):
         length = len(sons)
         for i in range(length):
             son = sons[i]
-            # print(son)
-            # 遍历子分支的所有节点
             for grandSon in son:
                 grandSonFrist = firstSet(grammar,grandSon)
                 if 'ε' in grandSonFrist:
@@ -109,31 +101,23 @@ def firstSet(grammar,leftSymbol):
                     break
     return result
 
+
 def followSet(grammar):
     allFollowSet = {}
     for vn in grammar["VN"]:
         allFollowSet[vn] = set()
-    # start symbol init with '#'
     allFollowSet[grammar["S"]].add("#")
-
     done = False
     while not done:
-        # print(allFollowSet)
         preStatus = [len(allFollowSet[vn]) for vn in grammar["VN"]]
-        # loop all P
         for p in grammar["P"]:
             sons = grammar["P"][p]
             length = len(sons)
             for i in range(length):
-
-                # 每个分支为一个son
                 son = sons[i]
-                # print(son)
-                # 遍历每个son的节点
                 sonNum = len(son)
                 for j in range(sonNum):
                     grandSon = son[j]
-                    # print(j,sonNum)
                     if grandSon not in grammar["VN"]:
                         continue
                     else:
@@ -168,21 +152,17 @@ def ll1Table(grammar):
         for vt in grammar["VT"]:
             table[vn][vt] = "error"
     follow = followSet(grammar)
-    # loop all P
     for p in grammar["P"]:
 
         sons = grammar["P"][p]
         sonNum = len(sons)
         for i in range(sonNum):
             son = sons[i]
-            # print(son)
             head = son[0]
             if head in grammar["VT"]:
                 table[p][head] = son
-            # elif
             else:
                 possible = set()
-                # print(son)
                 for element in son:
                     if element in grammar["VN"]:
                         tmp = first[element].copy()
@@ -195,10 +175,8 @@ def ll1Table(grammar):
                     elif element == 'ε':
                         possible = possible.union(follow[p])
                     elif element in grammar["VT"]:
-                        # print(son)
                         possible.add(element)
                         break
-                # print(p+":" + str(possible))
                 for poss in possible:
                     table[p][poss] = son
     return table
@@ -226,7 +204,6 @@ def generateAST(tokens):
         while not done:
             top = stack.pop()
             while top == 'ε':
-                # print(stack)
                 top = stack.pop()
                 current.insertChild(AstNode("ε","ε"))
                 current = current.step()
@@ -245,7 +222,6 @@ def generateAST(tokens):
             if choice == "error":
                 done = True
                 error = True
-                #print("error",token,top,tokenType)
                 break
             else:
                 # for
