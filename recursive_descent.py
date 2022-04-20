@@ -1,35 +1,42 @@
-#递归下降
-import ffp
-
-tokens = []
-token_path = 'rsc/token.txt'
-
-# 读取token序列
-ft = open(token_path, 'r')
-for line in ft.readlines():
-    for token in line.strip('\n').strip('').split(' '):
-        tokens.append(token)
+# 递归下降
+from var import dic, predictSet, tokens, vt, grammarError,S
 
 index = 0
 
-def Start(name):
+
+def begin(name, depth=1):
+    global index
+    if name == S:
+        index = 0
+    tree_dict = {"name": name, "children": []}
     match_formula = ''
-    for formula in ffp.dic[name].split(' | '):
-        if tokens[index] in ffp.predictSet[name + ' = ' + formula]:
+    for formula in dic[name].split(' | '):
+        if tokens[index]["lex"] in predictSet[name + ' = ' + formula]:
             match_formula = formula
             break
-    print(name + ' = ' + match_formula)
+    if match_formula == '':
+        err = '出现语法错误!错误位置：' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]
+        raise grammarError(err)
+
     for v in match_formula.split(' '):
         if v == '$':
+            tree_dict["children"].append({"name":v})
             break
-        elif v in ffp.vt:
-            Match(v)
+        elif v in vt:
+            if v == tokens[index]["lex"]:
+                tree_dict["children"].append({"name":v})
+                index += 1
+                root_tag = depth == 1 and v == match_formula.split(' ')[-1]
+
+                if root_tag and index < len(tokens):
+                    err = '出现语法错误!' + '\n' + '语句多余，多余位置:' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]
+                    raise grammarError(err)
+                if not root_tag and index == len(tokens):
+                    err = '出现语法错误!' + '\n' + '语句残缺'
+                    raise grammarError(err)
+            else:
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]
+                raise grammarError(err)
         else:
-            Start(v)
-    return
-
-
-def Match(v):
-    global index
-    index += 1
-    return
+            tree_dict["children"].append(begin(v, depth + 1))
+    return tree_dict

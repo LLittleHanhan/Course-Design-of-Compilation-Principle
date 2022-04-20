@@ -1,15 +1,18 @@
-from var import dic, S, vt, cfirstSet, ffirstSet, followSet, predictSet
+from var import dic, S, vt, predictSet,vt_path, formula_path, predict_path
 
+ffirstSet = {}  # 产生式右端的first集
+cfirstSet = {}  # 产生式左端vt的first集
+followSet = {}  # follow集
 
-def generateFFTSet(vt_path, formula_path, predict_path):
+def generateFFTSet():
     fv = open(vt_path, 'r')
     ff = open(formula_path, 'r')
     # 读VT
-    for v in fv.read().strip('').split(' '):
+    for v in fv.read().strip(' ').split(' '):
         vt.add(v)
     # 读产生式
     for line in ff.readlines():
-        temp = line.strip('\n').strip('').split(' ::= ')
+        temp = line.strip('\n').strip(' ').split(' ::= ')
         dic[temp[0]] = temp[1]
         # cfirst集初始化
         cfirstSet[temp[0]] = set()

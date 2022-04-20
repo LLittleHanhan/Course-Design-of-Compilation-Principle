@@ -13,17 +13,14 @@ tokens = []  # token序列
 vt = set()  # 非终极符
 S = 'Program'  # 起始符
 
-ffirstSet = {}  # 产生式右端的first集
-cfirstSet = {}  # 产生式左端vt的first集
-followSet = {}  # follow集
 predictSet = {}  # predict集
 
 gramTree = Tree()
 
-# 记录token信息
-class infoNode:
-    def __init__(self, nextBrotherId=-1, tokenInfo=None):
-        self.nextBrotherId = nextBrotherId
-        self.tokenInfo = tokenInfo
+class grammarError(Exception):
+    def __init__(self, ErrorInfo):
+        super().__init__(self)
+        self.ErrorInfo = ErrorInfo
 
-
+    def __str__(self):
+        return self.ErrorInfo

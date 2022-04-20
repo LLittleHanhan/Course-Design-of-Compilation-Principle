@@ -1,24 +1,28 @@
-from var import tokens, S, dic, predictSet, gramTree,infoNode
+from var import tokens, S, dic, predictSet, gramTree, grammarError, vt
 
 
-# 异常处理
-class grammarError(Exception):
-    def __init__(self, ErrorInfo):
-        super().__init__(self)
-        self.ErrorInfo = ErrorInfo
+def my_to_dict(self, nid=None):
+    nid = self.root if (nid is None) else nid
+    ntag = self[nid].tag
+    tree_dict = {"name": ntag, "children": []}
+    if self[nid].expanded:
+        queue = [self[i] for i in self[nid].successors(self._identifier)]
+        for elem in queue:
+            tree_dict["children"].append(
+                my_to_dict(self, elem.identifier))
+        if len(tree_dict["children"]) == 0:
+            tree_dict = {"name": ntag}
+        return tree_dict
 
-    def __str__(self):
-        return self.ErrorInfo
+
+# 记录token信息
+class infoNode:
+    def __init__(self, nextBrotherId=-1, tokenInfo=None):
+        self.nextBrotherId = nextBrotherId
+        self.tokenInfo = tokenInfo
 
 
-def ll1(token_path):
-    # 读取token序列
-    ft = open(token_path, 'r')
-    for line in ft.readlines():
-        info = line.strip('\n').strip('').split(' ')
-        token = {"line": info[0], "lex": info[1], "sem": info[2]}
-        tokens.append(token)
-
+def ll1():
     id = 0  # 用于标志每一个树节点
     info = infoNode()
     gramTree.create_node(tag=S, identifier=id, data=info)
@@ -31,6 +35,10 @@ def ll1(token_path):
         token = tokens[i]
         empty_tag = False
         while cur_node.tag != token["lex"] and cur_node.tag != '$':
+            if cur_node.tag in vt:
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
+                      token["sem"]
+                raise grammarError(err)
             branch_tag = False
             empty_tag = False
             for formula in dic[cur_node.tag].split(' | '):
@@ -51,7 +59,8 @@ def ll1(token_path):
                         empty_tag = True
                     break
             if not branch_tag:
-                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] +'\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + token["sem"]
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
+                      token["sem"]
                 raise grammarError(err)
         # 匹配成功
         if not empty_tag:
@@ -71,12 +80,11 @@ def ll1(token_path):
             cur_node = gramTree.get_node(cur_node.data.nextBrotherId)
         # 异常处理
         if root_tag and i < tokensLen:
-            err = '出现语法错误!' + '\n' + '语句多余，多余位置:' + '\n' + 'line:' + tokens[i]["line"] + '\n' + 'lex:' + tokens[i]["lex"] + '\n' + 'sem:' + tokens[i]["sem"]
+            err = '出现语法错误!' + '\n' + '语句多余，多余位置:' + '\n' + 'line:' + tokens[i]["line"] + '\n' + 'lex:' + tokens[i][
+                "lex"] + '\n' + 'sem:' + tokens[i]["sem"]
 
             raise grammarError(err)
         if not root_tag and i == tokensLen:
             err = '出现语法错误!' + '\n' + '语句残缺'
             raise grammarError(err)
-        # if root_tag and i == tokensLen:
-    #gramTree.show()
-    return
+    return my_to_dict(gramTree)
