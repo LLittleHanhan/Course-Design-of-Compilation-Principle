@@ -15,19 +15,26 @@ def my_to_dict(self, nid=None):
             tree_dict = {"name": ntag}
         return tree_dict
 
-def visualization():
+def visualization(width="1000px",height="1000px"):
     gramTreeDic = my_to_dict(gramTree)
     c = (
-        Tree()
+        Tree(init_opts=opts.InitOpts(width=width,
+                                     height=height,
+                                     theme="vintage",
+                                     page_title="grammarTree"))
             .add(
             "",
             [gramTreeDic],
-            collapse_interval=2,
+            collapse_interval=0,
             orient="TB",
+            initial_tree_depth = -1,
+            is_roam=True,
+
             label_opts=opts.LabelOpts(
-                position="top",
-                horizontal_align="right",
-                vertical_align="middle",
+
+                #position="bottom",
+                #horizontal_align="center",
+                #vertical_align="middle",
                 rotate=0,
             ),
         )
