@@ -10,10 +10,11 @@ Created on 2018年5月29日
 @description:
 """
 from PyQt5 import QtWidgets
+from PyQt5.uic.properties import QtCore
 
 from CIFA import lex
-
-
+from grammar import *
+from semantic import *
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QWidget, QListWidget, QStackedWidget, QHBoxLayout, \
@@ -21,6 +22,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QListWidget, QStackedWidget, 
     QVBoxLayout, QAction, QMainWindow, qApp, QMenuBar, QComboBox, QTextEdit
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QUrl
+
+
+
 dir_dict={}
 class LeftTabWidget(QWidget):
 
@@ -67,7 +71,35 @@ class LeftTabWidget(QWidget):
 
         self.setLayout(layout)
 
+    def run_program(self,directory,name):
+        # 跑编译程序
+        l = lex()
+        l.run(directory)
+        print("lex done")
+        dir_dict[name] = directory
+        print(dir_dict)
+        # func(0)
+        print(sem_run(directory))
+
+        #node_count = 0
+        print(check_grammar(0))
+        #print(sem_run(directory))
+        #print(check_grammar(0))
+
+        # 存路径
+
+        # 更新界面
+        self.set_program(directory)
+        self.set_lex()
+        self.parse.load(QUrl(QFileInfo("rsc/GrammarTree.html").absoluteFilePath()))
+
+    #def restart(self):
+        #QtCore.QCoreApplication.quit()
+        #status = QtCore.QProcess.startDetached(sys.executable, sys.argv)
+        #print(status)
+
     def btn_clicked(self):
+        #self.restart()
         directory = QtWidgets.QFileDialog.getOpenFileName(self,
                                                           "getOpenFileName", "./",
                                                           "All Files (*);;Text Files (*.txt)")
@@ -79,16 +111,8 @@ class LeftTabWidget(QWidget):
         self.select.currentIndexChanged.disconnect(self.selectionChange)  # 连接action
         self.select.addItem(name)
         self.select.currentIndexChanged.connect(self.selectionChange)  # 连接action
-        #跑编译程序
-        l = lex()
-        l.run(directory)
-        #存路径
-        dir_dict[name]=directory
-        print(dir_dict)
-        #更新界面
-        self.set_program(directory)
-        self.set_lex()
-        self.parse.load(QUrl(QFileInfo("rsc/GrammarTree.html").absoluteFilePath()))
+        self.run_program(directory,name)
+
 
     def selectionChange(self, i):
         #self.label.setText(self.cb.currentText())
@@ -100,10 +124,7 @@ class LeftTabWidget(QWidget):
 
         print(directory)
         #重新跑
-        l.run(directory)
-        self.set_program(directory)
-        self.set_lex()
-        self.parse.load(QUrl(QFileInfo("rsc/GrammarTree.html").absoluteFilePath()))
+        self.run_program(directory,name)
 
     def set_left_list(self,text):
         item = QListWidgetItem(str(text), self.listWidget)

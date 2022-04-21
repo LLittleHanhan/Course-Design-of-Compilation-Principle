@@ -32,7 +32,7 @@ class Analyzer(object):
         self.index = 0
         self.tokens = tokens
         self.root = root
-        self.symTable = SymbolTable()
+        self.symTable = SymbolTable(0)
         self.state = myState.START
         self.current = root
         self.error = False
@@ -103,6 +103,7 @@ class Analyzer(object):
         self.declarePart()
         self.programBody()
         self.out.close()
+        self.display()
 
     def programHead(self):
         self.stepInto("ProgramName")
@@ -177,6 +178,7 @@ class Analyzer(object):
                     self.stepInto("VarDecMore")
     def procDec(self):
         curSymTab = self.symTable
+        self.symLevel+=1
         self.stepInto("ProcDec")
         self.step()
         if self.current.isTokenType("ε"):
@@ -189,8 +191,8 @@ class Analyzer(object):
                     self.stepInto("ProcName")
                     self.step()
                     procName = self.current.getTokenVal()
-                    proc = Symbol(kind="procDec",name=procName,param=SymbolTable())
-                    symTable = SymbolTable()
+                    proc = Symbol(kind="procDec",name=procName,param=SymbolTable(self.symLevel))
+                    symTable = SymbolTable(self.symLevel)
                     symTable.add(proc)
                     procError = False
                     if procName in self.symTable:
@@ -238,6 +240,7 @@ class Analyzer(object):
                     self.stepInto("ProcBody")
                     self.programBody()
                     self.symTable = curSymTab
+                    self.symLevel-=1
                     self.stepInto("ProcDecMore")
 
     def stmList(self):
@@ -350,7 +353,7 @@ class Analyzer(object):
                                 actParamList.append(expType)
                                 self.stepInto("ActParamMore")
                         actParamLen = len(actParamList)
-                        paramList = SymbolTable()
+                        paramList = SymbolTable(self.symLevel)
                         if not varError:
                             #函数名检查
                             if var.decKind != "procDec":
@@ -627,6 +630,12 @@ class Analyzer(object):
             return False
         else:
             return True
+    def display(self):
+        out = open("sem_symtable","w")
+        for i in self.scope:
+            for j in i:
+                out.write(j.info()+"%d\n" % i.level)
+        out.close()
 
 def sem_run(filename):
     scanner = list(open(filename,"r").read())
@@ -648,8 +657,30 @@ def sem_run(filename):
 
     analyzer = Analyzer(tokens,root)
     analyzer.analyze()
-    return analyzer.error
+    temp=analyzer.error
+    del analyzer.symTable
+    del tokens
+    del analyzer
+    del root
+    return temp
 
-st = "source.txt"
+
+
+
+st = "example/c1.txt"
+b = sem_run(st)
+st = "example/c2.txt"
 b = sem_run(st)
 print(b)
+
+
+
+
+
+
+
+
+
+
+
+

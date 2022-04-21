@@ -230,6 +230,7 @@ def generateAST(tokens):
                 for i in choice:
                     current.insertChild(AstNode(i))
                 current = current.child[0]
+    root.reset()
     return root
 
 

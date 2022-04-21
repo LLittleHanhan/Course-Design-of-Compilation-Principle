@@ -15,10 +15,12 @@ class Symbol(object):
 
     def __repr__(self):
         return "%s %s %s "%(self.name,self.decKind,self.typePtr)
-
+    def info(self):
+        return "%s %s %s "%(self.name,self.decKind,self.typePtr)
 class SymbolTable(object):
-    def __init__(self):
+    def __init__(self,level):
         self.table = []
+        self.level =level
 
     def add(self,symbol):
         self.table.append(symbol)
@@ -92,8 +94,13 @@ class RecordType(object):
 import json
 import sys
 
-node_count = (x for x in range(100000))
-
+class nc():
+    def __init__(self):
+        self.nc= (x for x in range(100000))
+    def reset(self):
+        del self.nc
+        self.nc=(x for x in range(100000))
+nc = nc()
 class AstNode(object):
     def __init__(self,tokenType,tokenVal="",father=None):
         self.tokenType = tokenType
@@ -101,8 +108,9 @@ class AstNode(object):
         self.father = father
         self.child = []
         self.brother = []
-        self.id = next(node_count)
-
+        self.id = next(nc.nc)
+    def reset(self):
+        nc.reset()
     def isTokenType(self,tokenType):
         return self.tokenType == tokenType
 
