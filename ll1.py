@@ -36,7 +36,8 @@ def ll1():
         empty_tag = False
         while cur_node.tag != token["lex"] and cur_node.tag != '$':
             if cur_node.tag in vt:
-                err = '1出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + token["sem"] + '\n' + '实际应匹配字符：' + cur_node.tag
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
+                      token["sem"]
                 raise grammarError(err)
             branch_tag = False
             empty_tag = False
@@ -58,10 +59,8 @@ def ll1():
                         empty_tag = True
                     break
             if not branch_tag:
-                cor_vt = set()
-                for formula in dic[cur_node.tag].split(' | '):
-                    cor_vt |= predictSet[cur_node.tag + ' = ' + formula]
-                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + token["sem"] + '\n' + '实际应匹配字符：' + str(cor_vt)
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
+                      token["sem"]
                 raise grammarError(err)
         # 匹配成功
         if not empty_tag:
@@ -86,6 +85,6 @@ def ll1():
 
             raise grammarError(err)
         if not root_tag and i == tokensLen:
-            err = '出现语法错误!' + '\n' + '程序不完整。'
+            err = '出现语法错误!' + '\n' + '语句残缺'
             raise grammarError(err)
     return my_to_dict(gramTree)

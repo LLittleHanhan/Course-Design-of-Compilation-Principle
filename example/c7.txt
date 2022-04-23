@@ -1,6 +1,4 @@
-{��һ����������������һ������������}
-{����n,��n<10,�����n+10,n+10;
-            �������n-10,n-10}
+
 
 program  example
 type w1=record
@@ -11,7 +9,7 @@ var
      integer a;
      integer b;
      w1 c;
-     {w2 d;�������}
+     {w2 d;       }
 procedure sd(integer s1;var integer s2); 
 var integer ss;
 procedure sss(integer a);

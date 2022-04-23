@@ -14,7 +14,10 @@ begin
 x:=3;
 y:=4;
 z:=5;
-t:=5;
+x(x,y,z);
+x(x,y,z);
+x(x,y,z);
+x(x,y,z);
 f(x,y,z);
 write(x);
 write(y);

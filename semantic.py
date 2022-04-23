@@ -193,7 +193,7 @@ class Analyzer(object):
                     procName = self.current.getTokenVal()
                     proc = Symbol(kind="procDec",name=procName,param=SymbolTable(self.symLevel))
                     symTable = SymbolTable(self.symLevel)
-                    symTable.add(proc)
+                    #symTable.add(proc)
                     procError = False
                     if procName in self.symTable:
                         procError = True
@@ -631,7 +631,7 @@ class Analyzer(object):
         else:
             return True
     def display(self):
-        out = open("sem_symtable","w")
+        out = open("sem_symtable.txt","w")
         for i in self.scope:
             for j in i:
                 out.write(j.info()+"%d\n" % i.level)
@@ -666,12 +666,22 @@ def sem_run(filename):
 
 
 
-
-st = "example/c1.txt"
+'''
+st = "example/c4.txt"
 b = sem_run(st)
+
+
+
 st = "example/c2.txt"
 b = sem_run(st)
 print(b)
+'''
+
+
+
+
+
+
 
 
 

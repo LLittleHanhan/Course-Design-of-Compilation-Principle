@@ -2,17 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6bfd52d-9200-4971-8753-1bb6de841052" name="默认变更列表" comment="a little work">
-      <change beforePath="$PROJECT_DIR$/.idea/design.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/design.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/c2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ffp.py" beforeDir="false" afterPath="$PROJECT_DIR$/ffp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/c4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/c7.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c7.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/c8.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c8.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/easy.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/easy.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar.py" beforeDir="false" afterPath="$PROJECT_DIR$/grammar.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ll1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ll1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rsc/predict.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/predict.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rsc/token.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/token.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sem1.py" beforeDir="false" afterPath="$PROJECT_DIR$/sem1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sem_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sem_result.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/semantic.py" beforeDir="false" afterPath="$PROJECT_DIR$/semantic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symbol.py" beforeDir="false" afterPath="$PROJECT_DIR$/symbol.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,8 +159,8 @@
       <list>
         <item itemvalue="Python.app" />
         <item itemvalue="Python.semantic" />
-        <item itemvalue="Python.sem1" />
         <item itemvalue="Python.grammar" />
+        <item itemvalue="Python.sem1" />
         <item itemvalue="Python.CIFA" />
       </list>
     </recent_temporary>
@@ -227,7 +229,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650270113435</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="update">
+      <created>1650541496744</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1650541496744</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
