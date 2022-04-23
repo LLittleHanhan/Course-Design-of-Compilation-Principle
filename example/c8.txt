@@ -1,6 +1,3 @@
-{�����ò���}
-{����n,��n<10,�����n+10,20,n+10;
-           �������n-10,20,n-10}
 program  example
 type w1=record
         integer x;

@@ -1,4 +1,4 @@
-{�򵥵Ĺ��̵��ã����Ա�εĴ���}
+{ 򵥵Ĺ  ̵  ã    Ա εĴ   }
 program pp
 var   integer  v1;
 char  c;

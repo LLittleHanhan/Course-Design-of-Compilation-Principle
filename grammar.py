@@ -63,18 +63,9 @@ def check_grammar(mode=0, width="1000px", height="1000px"):
 
 if __name__ == '__main__':
     check_grammar(mode=1)
-    check_grammar(mode=0)
-    check_grammar(mode=1)
-    check_grammar(mode=0)
-    check_grammar(mode=1)
-    check_grammar(mode=0)
-    check_grammar(mode=1)
-    check_grammar(mode=0)
-    check_grammar(mode=1)
-    check_grammar(mode=0)
-    check_grammar(mode=1)
-    check_grammar(mode=0)
-    check_grammar(mode=1)
+    with open('rsc/grammar_result.txt', 'r') as f:
+        err = f.readlines()
+    print(err)
 
 
 

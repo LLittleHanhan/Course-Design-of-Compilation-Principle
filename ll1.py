@@ -36,7 +36,7 @@ def ll1():
         empty_tag = False
         while cur_node.tag != token["lex"] and cur_node.tag != '$':
             if cur_node.tag in vt:
-                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
+                err = '错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
                       token["sem"]
                 raise grammarError(err)
             branch_tag = False
@@ -59,7 +59,7 @@ def ll1():
                         empty_tag = True
                     break
             if not branch_tag:
-                err = '出现语法错误!错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
+                err = '错误位置：' + '\n' + 'line:' + token["line"] + '\n' + 'lex:' + token["lex"] + '\n' + 'sem:' + \
                       token["sem"]
                 raise grammarError(err)
         # 匹配成功
@@ -80,11 +80,11 @@ def ll1():
             cur_node = gramTree.get_node(cur_node.data.nextBrotherId)
         # 异常处理
         if root_tag and i < tokensLen:
-            err = '出现语法错误!' + '\n' + '语句多余，多余位置:' + '\n' + 'line:' + tokens[i]["line"] + '\n' + 'lex:' + tokens[i][
+            err =  '语句多余，多余位置:' + '\n' + 'line:' + tokens[i]["line"] + '\n' + 'lex:' + tokens[i][
                 "lex"] + '\n' + 'sem:' + tokens[i]["sem"]
 
             raise grammarError(err)
         if not root_tag and i == tokensLen:
-            err = '出现语法错误!' + '\n' + '语句残缺'
+            err =  '语句残缺'
             raise grammarError(err)
     return my_to_dict(gramTree)

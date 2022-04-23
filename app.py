@@ -9,6 +9,8 @@ Created on 2018年5月29日
 @file: LeftTabWidget
 @description:
 """
+import re
+
 from PyQt5 import QtWidgets
 from PyQt5.uic.properties import QtCore
 
@@ -19,10 +21,43 @@ from semantic import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QApplication, QWidget, QListWidget, QStackedWidget, QHBoxLayout, \
     QListWidgetItem, QLabel, QTableWidget, QTableWidgetItem, QAbstractItemView, QHeaderView, QMenu, QPushButton, \
-    QVBoxLayout, QAction, QMainWindow, qApp, QMenuBar, QComboBox, QTextEdit
+    QVBoxLayout, QAction, QMainWindow, qApp, QMenuBar, QComboBox, QTextEdit, QLineEdit, QMessageBox
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtCore import QUrl
 
+class Child(QWidget):
+    def __init__(self,type):
+        super().__init__()
+        self.resize(600, 300)
+        layout=QVBoxLayout()
+        self.text=QTextEdit()
+        if type=='parse':
+            self.parse()
+        else:
+            self.sem()
+        self.text.setText(self.err)
+        self.text.setReadOnly(True)
+        layout.addWidget(self.text)
+        self.setLayout(layout)
+
+
+
+    def parse(self):
+        self.setWindowTitle('语法错误')
+        self.err = ''
+        with open('rsc/grammar_result.txt', 'r', encoding='utf-8') as f:
+            temp = f.read()
+        self.err=str(temp)
+        print(self.err)
+
+
+    def sem(self):
+        self.setWindowTitle('语义错误')
+        self.err = ''
+        with open('sem_result.txt', 'r', encoding='utf-8') as f:
+            temp = f.readlines()
+        self.err = str(temp[0])
+        print(self.err)
 
 
 dir_dict={}
@@ -71,6 +106,13 @@ class LeftTabWidget(QWidget):
 
         self.setLayout(layout)
 
+    def msg(self,type):
+        self.ch = Child(type)
+        self.ch.show()
+
+
+
+
     def run_program(self,directory,name):
         # 跑编译程序
         l = lex()
@@ -78,25 +120,30 @@ class LeftTabWidget(QWidget):
         print("lex done")
         dir_dict[name] = directory
         print(dir_dict)
-        # func(0)
-        print(sem_run(directory))
 
-        #node_count = 0
-        print(check_grammar(0))
-        #print(sem_run(directory))
-        #print(check_grammar(0))
+        flag=check_grammar(0)
+        if flag==1 :
+            sem_flag=sem_run(directory)
+            if sem_flag == False:
+                self.select.currentIndexChanged.disconnect(self.selectionChange)  # 连接action
+                self.select.addItem(name)
+                self.select.currentIndexChanged.connect(self.selectionChange)  # 连接action
+                self.set_program(directory)
+                self.set_lex()
+                self.parse.load(QUrl(QFileInfo("rsc/GrammarTree.html").absoluteFilePath()))
+                self.set_sem(sem_flag)
+            else :
+                self.msg('sem')
+        else:
+            self.msg('parse')
+
+
 
         # 存路径
 
         # 更新界面
-        self.set_program(directory)
-        self.set_lex()
-        self.parse.load(QUrl(QFileInfo("rsc/GrammarTree.html").absoluteFilePath()))
 
-    #def restart(self):
-        #QtCore.QCoreApplication.quit()
-        #status = QtCore.QProcess.startDetached(sys.executable, sys.argv)
-        #print(status)
+
 
     def btn_clicked(self):
         #self.restart()
@@ -108,9 +155,6 @@ class LeftTabWidget(QWidget):
         name=name[len(name)-1]
         name=name[0:-4]
         #print(name)
-        self.select.currentIndexChanged.disconnect(self.selectionChange)  # 连接action
-        self.select.addItem(name)
-        self.select.currentIndexChanged.connect(self.selectionChange)  # 连接action
         self.run_program(directory,name)
 
 
@@ -118,7 +162,6 @@ class LeftTabWidget(QWidget):
         #self.label.setText(self.cb.currentText())
         # 根据设置的文本调整尺寸
         #self.label.adjustSize()
-        l = lex()
         name=self.select.currentText()
         directory=dir_dict[name]
 
@@ -141,13 +184,9 @@ class LeftTabWidget(QWidget):
         self.program.setText(pro)
 
     def set_lex(self):
-        res=[]
         with open('rsc/token.txt') as f:
             data=f.readlines()
         #print(data)
-        count = 0
-        for v in res:
-            count = count + len(v)
         count=len(data)
         self.LEX.setRowCount(count)
         for k,v in enumerate(data):
@@ -163,6 +202,32 @@ class LeftTabWidget(QWidget):
             newItem = QTableWidgetItem(v[2])
             newItem.setTextAlignment(Qt.AlignCenter)
             self.LEX.setItem(k, 2, newItem)
+
+    def set_sem(self,flag):
+        if flag==False:
+            with open("sem_symtable.txt",'r') as f:
+                data = f.readlines()
+            count = len(data)
+            self.sem_table.setRowCount(count)
+            for k, v in enumerate(data):
+                v = v.split()
+                L=len(v)
+                temp=v[2]
+                if L > 4:
+                    temp=temp+v[3]+v[4]+' '+v[5]+' '+v[6]
+                newItem = QTableWidgetItem(v[0])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                self.sem_table.setItem(k, 0, newItem)
+                newItem = QTableWidgetItem(v[1])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                self.sem_table.setItem(k, 1, newItem)
+                newItem = QTableWidgetItem(temp)
+                newItem.setTextAlignment(Qt.AlignCenter)
+                self.sem_table.setItem(k, 2, newItem)
+                newItem = QTableWidgetItem(v[-1])
+                newItem.setTextAlignment(Qt.AlignCenter)
+                self.sem_table.setItem(k, 3, newItem)
+
 
 
 
@@ -198,12 +263,20 @@ class LeftTabWidget(QWidget):
         #语法html
         self.parse = QWebEngineView()
         self.stackedWidget.addWidget(self.parse)
+        #语义分析结果
+        self.sem_table=QTableWidget()
+        self.sem_table.setColumnCount(4)
+        self.sem_table.setHorizontalHeaderLabels(['名称', '类型', '变量类型','层数'])
+        self.sem_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.sem_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.sem_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.stackedWidget.addWidget(self.sem_table)
 
 
 # 美化样式表
 Stylesheet = """
 /*去掉item虚线边框*/
-QListWidget, QListView, QTreeWidget, QTreeView, QMenuBar,QTextEdit {
+QListWidget, QListView, QTreeWidget, QTreeView, QMenuBar,QTextEdit,QLineEdit {
     outline: 0px;
 }
 /*设置左侧选项的最小最大宽度,文字颜色和背景颜色*/
@@ -241,6 +314,10 @@ QTextEdit {
     font-size: 20px;
     color: #ADADEB;
     background-color: rgb(238,238,238);
+}
+
+QMessageBox{
+    color: #ADADEB;
 }
 
 """

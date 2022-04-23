@@ -15,7 +15,7 @@ procedure sd(integer s1;var integer s2);
 begin
    s2:=s1+1
 end
-begin       
+begin
    read(b);
    read(d);
    sd(b,c);
