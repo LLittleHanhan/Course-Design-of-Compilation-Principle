@@ -15,7 +15,10 @@ def begin(name, depth=1):
             match_formula = formula
             break
     if match_formula == '':
-        err = '出现语法错误!错误位置：' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]
+        cor_vt = set()
+        for formula in dic[name].split(' | '):
+            cor_vt |= predictSet[name + ' = ' + formula]
+        err = '出现语法错误!错误位置：' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"] + '\n' + '实际应匹配字符：' + str(cor_vt)
         raise grammarError(err)
 
     for v in match_formula.split(' '):
@@ -32,10 +35,10 @@ def begin(name, depth=1):
                     err = '出现语法错误!' + '\n' + '语句多余，多余位置:' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]
                     raise grammarError(err)
                 if not root_tag and index == len(tokens):
-                    err = '出现语法错误!' + '\n' + '语句残缺'
+                    err = '出现语法错误!' + '\n' + '程序不完整'
                     raise grammarError(err)
             else:
-                err = '出现语法错误!错误位置：' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]
+                err = '出现语法错误!错误位置：' + '\n' + 'line:' + tokens[index]["line"] + '\n' + 'lex:' + tokens[index]["lex"] + '\n' + 'sem:' + tokens[index]["sem"]+ '实际应匹配字符：' + v
                 raise grammarError(err)
         else:
             tree_dict["children"].append(begin(v, depth + 1))
