@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6bfd52d-9200-4971-8753-1bb6de841052" name="默认变更列表" comment="a little work">
+    <list default="true" id="b6bfd52d-9200-4971-8753-1bb6de841052" name="默认变更列表" comment="Final update">
+      <change beforePath="$PROJECT_DIR$/.idea/design.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/design.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/c2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/c4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c4.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/c7.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c7.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/c8.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/c8.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/easy.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example/easy.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grammar.py" beforeDir="false" afterPath="$PROJECT_DIR$/grammar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ll1.py" beforeDir="false" afterPath="$PROJECT_DIR$/ll1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/predict.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/predict.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/predict.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/rsc/token.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/token.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sem_result.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sem_result.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/semantic.py" beforeDir="false" afterPath="$PROJECT_DIR$/semantic.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +24,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="26JUCqnWzksWE9wWM7Lfifk3p7p" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -62,6 +58,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CIFA.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -83,6 +80,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -104,6 +102,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/grammar.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -125,6 +124,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sem1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -146,6 +146,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/semantic.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -155,11 +156,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.CIFA" />
+      <item itemvalue="Python.app" />
+      <item itemvalue="Python.grammar" />
+      <item itemvalue="Python.sem1" />
+      <item itemvalue="Python.semantic" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.app" />
-        <item itemvalue="Python.semantic" />
         <item itemvalue="Python.grammar" />
+        <item itemvalue="Python.semantic" />
         <item itemvalue="Python.sem1" />
         <item itemvalue="Python.CIFA" />
       </list>
@@ -179,6 +187,13 @@
       <workItem from="1647141058424" duration="1939000" />
       <workItem from="1647155371473" duration="1375000" />
       <workItem from="1647156760825" duration="205000" />
+      <workItem from="1650781468643" duration="1080000" />
+      <workItem from="1650880312161" duration="124000" />
+      <workItem from="1650942881119" duration="2194000" />
+      <workItem from="1650986543450" duration="164000" />
+      <workItem from="1651025016424" duration="900000" />
+      <workItem from="1652791135357" duration="184000" />
+      <workItem from="1655946987511" duration="324000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <created>1647155848406</created>
@@ -230,13 +245,20 @@
       <updated>1650270113435</updated>
     </task>
     <task id="LOCAL-00008" summary="update">
-      <created>1650541496744</created>
+      <created>1650726539238</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1650541496744</updated>
+      <updated>1650726539238</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Final update">
+      <created>1650943606222</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1650943606222</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,12 +286,25 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1" />
     <MESSAGE value="2" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="Final update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final update" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/design$classes.coverage" NAME="classes 覆盖结果" MODIFIED="1650249926788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$asff.coverage" NAME="asff 覆盖结果" MODIFIED="1650369540658" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$grammar.coverage" NAME="grammar Coverage Results" MODIFIED="1650726501973" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$2_YUFA.coverage" NAME="2.YUFA 覆盖结果" MODIFIED="1647156796331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$1_CIFA.coverage" NAME="1.CIFA 覆盖结果" MODIFIED="1647156803724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$3_YUYI.coverage" NAME="3.YUYI 覆盖结果" MODIFIED="1647156808407" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$app.coverage" NAME="app Coverage Results" MODIFIED="1655947005701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$recursive_descent.coverage" NAME="recursive_descent Coverage Results" MODIFIED="1650452298792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$main.coverage" NAME="main Coverage Results" MODIFIED="1650119472696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/2.YUFA" />
+    <SUITE FILE_PATH="coverage/design$ll1.coverage" NAME="ll1 覆盖结果" MODIFIED="1650258783943" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/design$semantic.coverage" NAME="semantic 覆盖结果" MODIFIED="1650381037863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

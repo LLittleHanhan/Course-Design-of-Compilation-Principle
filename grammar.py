@@ -28,7 +28,7 @@ def init():
     ft.close()
 
 
-def check_grammar(mode=0, width="1000px", height="1000px"):
+def check_grammar(mode=0, width="5000px", height="5000px"):
     '''
     mode = 0 为ll1
     mode = 1 为递归下降
